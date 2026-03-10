@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3afya - Healthy Vending Mobile App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #2DD881;
+            --dark-green: #1AB865;
+            --light-green: #E8F9F0;
+            --accent-orange: #FF8B3D;
+            --accent-purple: #9C6FDE;
+            --dark-bg: #1A1D29;
+            --card-bg: #252936;
+            --text-white: #FFFFFF;
+            --text-gray: #A0A4B8;
+            --text-dark: #2C3142;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #0F1419 0%, #1A1D29 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-white);
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            margin-bottom: 60px;
+            font-weight: 400;
+        }
+
+        .screens-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .phone-frame {
+            background: linear-gradient(145deg, #2C3142 0%, #1F2230 100%);
+            border-radius: 45px;
+            padding: 16px;
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .phone-frame:nth-child(1) { animation-delay: 0.1s; }
+        .phone-frame:nth-child(2) { animation-delay: 0.2s; }
+        .phone-frame:nth-child(3) { animation-delay: 0.3s; }
+        .phone-frame:nth-child(4) { animation-delay: 0.4s; }
+        .phone-frame:nth-child(5) { animation-delay: 0.5s; }
+        .phone-frame:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .phone-frame:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 40px 80px rgba(45, 216, 129, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .screen-label {
+            position: absolute;
+            top: -35px;
+            left: 20px;
+            color: var(--primary-green);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .phone-notch {
+            width: 140px;
+            height: 28px;
+            background: #0F1419;
+            border-radius: 0 0 20px 20px;
+            margin: 0 auto 12px;
+            position: relative;
+        }
+
+        .phone-notch::before {
+            content: '';
+            width: 60px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .screen {
+            background: #FFFFFF;
+            border-radius: 32px;
+            overflow: hidden;
+            position: relative;
+            min-height: 680px;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px 12px;
+            background: transparent;
+        }
+
+        .time {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 0.95rem;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .status-icon {
+            width: 18px;
+            height: 18px;
+            opacity: 0.8;
+        }
+
+        /* Navigation */
+        .nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px 20px;
+        }
+
+        .nav-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .icon-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--light-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-button:hover {
+            background: var(--primary-green);
+            transform: scale(1.05);
+        }
+
+        /* Screen-specific styles */
+        
+        /* Splash Screen */
+        .splash-screen {
+            background: linear-gradient(165deg, var(--primary-green) 0%, var(--dark-green) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .splash-screen::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+        }
+
+        .logo-big {
+            font-family: 'Outfit', sans-serif;
+            font-size: 5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 16px;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            letter-spacing: -0.03em;
+        }
+
+        .tagline {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.3rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            animation: bounce 1.4s ease-in-out infinite;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+        }
+
+        /* Home/Dashboard Screen */
+        .dashboard-content {
+            padding: 0 24px 24px;
+        }
+
+        .greeting-card {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 28px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .greeting-card::after {
+            content: '🌱';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 4rem;
+            opacity: 0.2;
+        }
+
+        .greeting {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-bottom: 4px;
+        }
+
+        .user-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .streak-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: var(--light-green);
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #5A6B7D;
+            font-weight: 500;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .view-all {
+            color: var(--primary-green);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .challenge-card {
+            background: white;
+            border: 2px solid var(--light-green);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .challenge-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+        }
+
+        .challenge-points {
+            background: var(--accent-orange);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #E8EBF0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-green) 0%, var(--dark-green) 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            margin-top: 8px;
+        }
+
+        /* QR Scanner Screen */
+        .scanner-screen {
+            background: #0F1419;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .scanner-header {
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+        }
+
+        .scanner-title {
+            font-family: 'Outfit', sans-serif;
+            color: white;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .scanner-viewfinder {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .viewfinder-frame {
+            width: 280px;
+            height: 280px;
+            position: relative;
+        }
+
+        .corner {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 4px solid var(--primary-green);
+        }
+
+        .corner-tl { top: 0; left: 0; border-right: none; border-bottom: none; border-radius: 8px 0 0 0; }
+        .corner-tr { top: 0; right: 0; border-left: none; border-bottom: none; border-radius: 0 8px 0 0; }
+        .corner-bl { bottom: 0; left: 0; border-right: none; border-top: none; border-radius: 0 0 0 8px; }
+        .corner-br { bottom: 0; right: 0; border-left: none; border-top: none; border-radius: 0 0 8px 0; }
+
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary-green), transparent);
+            box-shadow: 0 0 20px var(--primary-green);
+            animation: scan 2s ease-in-out infinite;
+        }
+
+        @keyframes scan {
+            0%, 100% { top: 0; }
+            50% { top: calc(100% - 3px); }
+        }
+
+        .scanner-instructions {
+            padding: 0 40px 40px;
+            text-align: center;
+        }
+
+        .scanner-text {
+            color: white;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .scanner-subtext {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Purchase Success Screen */
+        .success-screen {
+            background: linear-gradient(165deg, #2DD881 0%, #1AB865 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin-bottom: 32px;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .success-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .success-message {
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .points-earned {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 32px;
+            margin-bottom: 32px;
+            width: 100%;
+        }
+
+        .points-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .points-label {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .purchase-details {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #E8EBF0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .detail-value {
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Rewards Screen */
+        .rewards-header {
+            background: linear-gradient(165deg, var(--accent-purple) 0%, #7B4FBE 100%);
+            padding: 32px 24px;
+            color: white;
+            border-radius: 0 0 32px 32px;
+            margin-bottom: 24px;
+        }
+
+        .points-balance {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .balance-label {
+            font-size: 0.95rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+
+        .balance-amount {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+        }
+
+        .tier-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .tier-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .tier-info {
+            flex: 1;
+        }
+
+        .tier-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .tier-progress {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .rewards-list {
+            padding: 0 24px 24px;
+        }
+
+        .reward-item {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .reward-image {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #FFE5D0 0%, #FFD4B8 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+        }
+
+        .reward-info {
+            flex: 1;
+        }
+
+        .reward-name {
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 1.05rem;
+            margin-bottom: 4px;
+        }
+
+        .reward-description {
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .reward-cost {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--light-green);
+            color: var(--dark-green);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .redeem-button {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .redeem-button:hover {
+            background: var(--dark-green);
+            transform: scale(1.05);
+        }
+
+        /* Nutrition Tips Screen */
+        .tips-content {
+            padding: 0 24px 24px;
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, #FFF5E6 0%, #FFE8CC 100%);
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-card::before {
+            content: '💡';
+            position: absolute;
+            right: -10px;
+            top: -10px;
+            font-size: 8rem;
+            opacity: 0.1;
+        }
+
+        .tip-category {
+            color: var(--accent-orange);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+        }
+
+        .tip-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .tip-text {
+            color: #5A6B7D;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .tips-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .tip-item {
+            background: white;
+            border-left: 4px solid var(--primary-green);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .tip-item-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tip-emoji {
+            font-size: 1.3rem;
+        }
+
+        .tip-item-text {
+            color: var(--text-gray);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Progress/Profile Screen */
+        .profile-header {
+            background: linear-gradient(165deg, #FF8B3D 0%, #F57020 100%);
+            padding: 32px 24px;
+            color: white;
+            border-radius: 0 0 32px 32px;
+            margin-bottom: 24px;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            border: 4px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .profile-details h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile-subtitle {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .achievement {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .achievement-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .progress-content {
+            padding: 0 24px 24px;
+        }
+
+        .impact-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        .impact-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .impact-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #E8EBF0;
+        }
+
+        .impact-stat:last-child {
+            border-bottom: none;
+        }
+
+        .impact-label {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        .impact-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-green);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 16px 24px 24px;
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #E8EBF0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-gray);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active {
+            color: var(--primary-green);
+        }
+
+        .nav-icon {
+            font-size: 1.5rem;
+        }
+
+        .nav-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Utility */
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .badge-success {
+            background: var(--light-green);
+            color: var(--dark-green);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>3afya Mobile App</h1>
+        <p class="subtitle">Smart Healthy Vending Machine Integration</p>
+
+        <div class="screens-grid">
+            <!-- Screen 1: Splash Screen -->
+            <div class="phone-frame">
+                <div class="screen-label">Splash Screen</div>
+                <div class="phone-notch"></div>
+                <div class="screen splash-screen">
+                    <div class="logo-big">3afya</div>
+                    <div class="tagline">Your Journey to Healthier Choices</div>
+                    <div class="loading-dots">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 2: Home Dashboard -->
+            <div class="phone-frame">
+                <div class="screen-label">Home Dashboard</div>
+                <div class="phone-notch"></div>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <span class="status-icon">📶</span>
+                            <span class="status-icon">🔋</span>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-content">
+                        <div class="greeting-card">
+                            <div class="greeting">Good morning,</div>
+                            <div class="user-name">Aisha! 👋</div>
+                            <div class="streak-badge">
+                                🔥 7 Day Streak
+                            </div>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">🎯</div>
+                                <div class="stat-value">342</div>
+                                <div class="stat-label">Points Earned</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">⚡</div>
+                                <div class="stat-value">1,240</div>
+                                <div class="stat-label">Calories Saved</div>
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="section-title">Active Challenges</div>
+                            <a href="#" class="view-all">View All</a>
+                        </div>
+
+                        <div class="challenge-card">
+                            <div class="challenge-header">
+                                <div>
+                                    <div class="challenge-title">7-Day Healthy Streak</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-gray);">Make healthy choices for 7 consecutive days</div>
+                                </div>
+                                <div class="challenge-points">+100 pts</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 71%"></div>
+                            </div>
+                            <div class="progress-text">5/7 days completed</div>
+                        </div>
+
+                        <div class="challenge-card">
+                            <div class="challenge-header">
+                                <div>
+                                    <div class="challenge-title">Hydration Hero</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-gray);">Choose water over sugary drinks 10 times</div>
+                                </div>
+                                <div class="challenge-points">+50 pts</div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 30%"></div>
+                            </div>
+                            <div class="progress-text">3/10 completed</div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-nav">
+                        <a href="#" class="nav-item active">
+                            <div class="nav-icon">🏠</div>
+                            <div class="nav-label">Home</div>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">📊</div>
+                            <div class="nav-label">Progress</div>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">🎁</div>
+                            <div class="nav-label">Rewards</div>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">💡</div>
+                            <div class="nav-label">Tips</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 3: QR Scanner -->
+            <div class="phone-frame">
+                <div class="screen-label">QR Scanner</div>
+                <div class="phone-notch"></div>
+                <div class="screen scanner-screen">
+                    <div class="scanner-header">
+                        <button class="back-button">←</button>
+                        <div class="scanner-title">Scan QR Code</div>
+                        <div style="width: 44px;"></div>
+                    </div>
+
+                    <div class="scanner-viewfinder">
+                        <div class="viewfinder-frame">
+                            <div class="corner corner-tl"></div>
+                            <div class="corner corner-tr"></div>
+                            <div class="corner corner-bl"></div>
+                            <div class="corner corner-br"></div>
+                            <div class="scan-line"></div>
+                        </div>
+                    </div>
+
+                    <div class="scanner-instructions">
+                        <div class="scanner-text">Align QR code within frame</div>
+                        <div class="scanner-subtext">Point your camera at the vending machine's QR code to unlock healthy options</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 4: Purchase Success -->
+            <div class="phone-frame">
+                <div class="screen-label">Purchase Success</div>
+                <div class="phone-notch"></div>
+                <div class="screen success-screen">
+                    <div class="success-icon">✓</div>
+                    <div class="success-title">Great Choice!</div>
+                    <div class="success-message">You've made a healthy decision today 🌱</div>
+
+                    <div class="points-earned">
+                        <div class="points-value">+15</div>
+                        <div class="points-label">Points Earned</div>
+                    </div>
+
+                    <div class="purchase-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Item</span>
+                            <span class="detail-value">Protein Bar - Almond</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Calories</span>
+                            <span class="detail-value">180 kcal</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">vs Junk Food</span>
+                            <span class="detail-value" style="color: var(--primary-green);">-150 kcal saved 🎉</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Location</span>
+                            <span class="detail-value">Science Building, Floor 2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 5: Rewards -->
+            <div class="phone-frame">
+                <div class="screen-label">Rewards Store</div>
+                <div class="phone-notch"></div>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <span class="status-icon">📶</span>
+                            <span class="status-icon">🔋</span>
+                        </div>
+                    </div>
+
+                    <div class="rewards-header">
+                        <div class="points-balance">
+                            <div class="balance-label">Your Points Balance</div>
+                            <div class="balance-amount">342</div>
+                        </div>
+                        <div class="tier-badge">
+                            <div class="tier-icon">⭐</div>
+                            <div class="tier-info">
+                                <div class="tier-name">Silver Member</div>
+                                <div class="tier-progress">158 pts to Gold</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rewards-list">
+                        <div class="reward-item">
+                            <div class="reward-image">☕</div>
+                            <div class="reward-info">
+                                <div class="reward-name">Free Coffee</div>
+                                <div class="reward-description">Any size at campus café</div>
+                                <div class="reward-cost">💎 50 pts</div>
+                            </div>
+                            <button class="redeem-button">Redeem</button>
+                        </div>
+
+                        <div class="reward-item">
+                            <div class="reward-image" style="background: linear-gradient(135deg, #E8F9F0 0%, #C8F0DC 100%);">🥤</div>
+                            <div class="reward-info">
+                                <div class="reward-name">Smoothie Discount</div>
+                                <div class="reward-description">25% off any smoothie</div>
+                                <div class="reward-cost">💎 75 pts</div>
+                            </div>
+                            <button class="redeem-button">Redeem</button>
+                        </div>
+
+                        <div class="reward-item">
+                            <div class="reward-image" style="background: linear-gradient(135deg, #FFE5E5 0%, #FFCCCC 100%);">🎫</div>
+                            <div class="reward-info">
+                                <div class="reward-name">Gym Day Pass</div>
+                                <div class="reward-description">Free day at university gym</div>
+                                <div class="reward-cost">💎 150 pts</div>
+                            </div>
+                            <button class="redeem-button" style="background: #DDD; color: #999;">Redeem</button>
+                        </div>
+
+                        <div class="reward-item">
+                            <div class="reward-image" style="background: linear-gradient(135deg, #F0E8FF 0%, #E0D0FF 100%);">🎒</div>
+                            <div class="reward-info">
+                                <div class="reward-name">3afya Merch</div>
+                                <div class="reward-description">Eco-friendly water bottle</div>
+                                <div class="reward-cost">💎 300 pts</div>
+                            </div>
+                            <button class="redeem-button" style="background: #DDD; color: #999;">Redeem</button>
+                        </div>
+                    </div>
+
+                    <div class="bottom-nav">
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">🏠</div>
+                            <div class="nav-label">Home</div>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">📊</div>
+                            <div class="nav-label">Progress</div>
+                        </a>
+                        <a href="#" class="nav-item active">
+                            <div class="nav-icon">🎁</div>
+                            <div class="nav-label">Rewards</div>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">💡</div>
+                            <div class="nav-label">Tips</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 6: Nutrition Tips -->
+            <div class="phone-frame">
+                <div class="screen-label">Nutrition Tips</div>
+                <div class="phone-notch"></div>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <span class="status-icon">📶</span>
+                            <span class="status-icon">🔋</span>
+                        </div>
+                    </div>
+
+                    <div class="nav-header">
+                        <div class="nav-title">Tips & Insights</div>
+                        <button class="icon-button">🔍</button>
+                    </div>
+
+                    <div class="tips-content">
+                        <div class="tip-card">
+                            <div class="tip-category">Tip of the Day</div>
+                            <div class="tip-title">Hydrate Before You Eat</div>
+                            <div class="tip-text">Drinking water 30 minutes before meals can help reduce cravings and improve digestion. Try this before your next snack!</div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="section-title">Quick Tips</div>
+                        </div>
+
+                        <div class="tips-list">
+                            <div class="tip-item">
+                                <div class="tip-item-title">
+                                    <span class="tip-emoji">🥜</span>
+                                    <span>Protein Power</span>
+                                </div>
+                                <div class="tip-item-text">Choose snacks with at least 5g of protein to stay fuller longer and reduce late-night cravings.</div>
+                            </div>
+
+                            <div class="tip-item" style="border-left-color: var(--accent-orange);">
+                                <div class="tip-item-title">
+                                    <span class="tip-emoji">🍎</span>
+                                    <span>Smart Substitutions</span>
+                                </div>
+                                <div class="tip-item-text">Swap chips for nuts, soda for sparkling water, and candy for dried fruit. Small changes add up!</div>
+                            </div>
+
+                            <div class="tip-item" style="border-left-color: var(--accent-purple);">
+                                <div class="tip-item-title">
+                                    <span class="tip-emoji">⏰</span>
+                                    <span>Timing Matters</span>
+                                </div>
+                                <div class="tip-item-text">Eat your last snack 2-3 hours before bed to improve sleep quality and reduce late-night binge eating.</div>
+                            </div>
+
+                            <div class="tip-item">
+                                <div class="tip-item-title">
+                                    <span class="tip-emoji">📱</span>
+                                    <span>Track Your Wins</span>
+                                </div>
+                                <div class="tip-item-text">Studies show that tracking your healthy choices increases success by 40%. Keep using 3afya!</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-nav">
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">🏠</div>
+                            <div class="nav-label">Home</div>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">📊</div>
+                            <div class="nav-label">Progress</div>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">🎁</div>
+                            <div class="nav-label">Rewards</div>
+                        </a>
+                        <a href="#" class="nav-item active">
+                            <div class="nav-icon">💡</div>
+                            <div class="nav-label">Tips</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 7: Progress/Profile -->
+            <div class="phone-frame">
+                <div class="screen-label">Progress Tracking</div>
+                <div class="phone-notch"></div>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <span class="status-icon">📶</span>
+                            <span class="status-icon">🔋</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-header">
+                        <div class="profile-info">
+                            <div class="avatar">👤</div>
+                            <div class="profile-details">
+                                <h2>Aisha Sandakly</h2>
+                                <div class="profile-subtitle">Member since Jan 2026</div>
+                            </div>
+                        </div>
+
+                        <div class="achievements-grid">
+                            <div class="achievement">
+                                <div class="achievement-icon">🔥</div>
+                                <div class="achievement-label">7 Day Streak</div>
+                            </div>
+                            <div class="achievement">
+                                <div class="achievement-icon">⭐</div>
+                                <div class="achievement-label">Silver Tier</div>
+                            </div>
+                            <div class="achievement">
+                                <div class="achievement-icon">🏆</div>
+                                <div class="achievement-label">5 Challenges</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="progress-content">
+                        <div class="impact-card">
+                            <div class="impact-title">Your Impact This Month</div>
+                            <div class="impact-stat">
+                                <span class="impact-label">Healthy Choices</span>
+                                <span class="impact-value">23</span>
+                            </div>
+                            <div class="impact-stat">
+                                <span class="impact-label">Calories Saved</span>
+                                <span class="impact-value">1,240</span>
+                            </div>
+                            <div class="impact-stat">
+                                <span class="impact-label">Sugar Avoided (g)</span>
+                                <span class="impact-value">342</span>
+                            </div>
+                            <div class="impact-stat">
+                                <span class="impact-label">Money Saved</span>
+                                <span class="impact-value"><span style="color: #00732F;">د.إ</span> 18</span>
+                            </div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="section-title">Recent Activity</div>
+                        </div>
+
+                        <div class="challenge-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 700; color: var(--text-dark);">Protein Bar - Almond</div>
+                                <div class="badge badge-success">+15 pts</div>
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray); margin-bottom: 4px;">Science Building · 2 hours ago</div>
+                            <div style="font-size: 0.85rem; color: var(--primary-green); font-weight: 600;">150 calories saved vs chocolate bar</div>
+                        </div>
+
+                        <div class="challenge-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <div style="font-weight: 700; color: var(--text-dark);">Sparkling Water</div>
+                                <div class="badge badge-success">+10 pts</div>
+                            </div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray); margin-bottom: 4px;">Library · Yesterday</div>
+                            <div style="font-size: 0.85rem; color: var(--primary-green); font-weight: 600;">35g sugar avoided vs soda</div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-nav">
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">🏠</div>
+                            <div class="nav-label">Home</div>
+                        </a>
+                        <a href="#" class="nav-item active">
+                            <div class="nav-icon">📊</div>
+                            <div class="nav-label">Progress</div>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">🎁</div>
+                            <div class="nav-label">Rewards</div>
+                        </a>
+                        <a href="#" class="nav-item">
+                            <div class="nav-icon">💡</div>
+                            <div class="nav-label">Tips</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 8: Vending Machine Selection -->
+            <div class="phone-frame">
+                <div class="screen-label">Vending Selection</div>
+                <div class="phone-notch"></div>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <span class="status-icon">📶</span>
+                            <span class="status-icon">🔋</span>
+                        </div>
+                    </div>
+
+                    <div class="nav-header">
+                        <button class="icon-button" style="background: transparent; color: var(--text-dark);">←</button>
+                        <div class="nav-title">Choose Your Snack</div>
+                        <button class="icon-button">ℹ️</button>
+                    </div>
+
+                    <div style="padding: 0 24px 24px;">
+                        <div style="background: var(--light-green); border-radius: 16px; padding: 16px; margin-bottom: 24px; text-align: center;">
+                            <div style="font-size: 0.9rem; color: var(--dark-green); font-weight: 600;">📍 Science Building - Floor 2</div>
+                            <div style="font-size: 0.85rem; color: #5A6B7D; margin-top: 4px;">Connected to vending machine</div>
+                        </div>
+
+                        <div class="section-header">
+                            <div class="section-title">Available Options</div>
+                            <div style="font-size: 0.85rem; color: var(--text-gray);">8 items</div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div style="background: white; border: 2px solid var(--primary-green); border-radius: 16px; padding: 16px; display: flex; gap: 16px; align-items: center;">
+                                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #FFE5D0 0%, #FFD4B8 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">🥜</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; color: var(--text-dark); margin-bottom: 4px;">Protein Bar - Almond</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-gray);">180 cal · 12g protein</div>
+                                    <div style="font-size: 0.85rem; color: var(--primary-green); font-weight: 600; margin-top: 4px;">+15 points</div>
+                                </div>
+                                <div style="font-weight: 700; color: var(--text-dark); font-size: 1.1rem;"><span style="color: #00732F;">د.إ</span> 9</div>
+                            </div>
+
+                            <div style="background: white; border: 2px solid #E8EBF0; border-radius: 16px; padding: 16px; display: flex; gap: 16px; align-items: center;">
+                                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #E8F9F0 0%, #C8F0DC 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">🥤</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; color: var(--text-dark); margin-bottom: 4px;">Green Smoothie</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-gray);">120 cal · Natural ingredients</div>
+                                    <div style="font-size: 0.85rem; color: var(--primary-green); font-weight: 600; margin-top: 4px;">+20 points</div>
+                                </div>
+                                <div style="font-weight: 700; color: var(--text-dark); font-size: 1.1rem;"><span style="color: #00732F;">د.إ</span> 13</div>
+                            </div>
+
+                            <div style="background: white; border: 2px solid #E8EBF0; border-radius: 16px; padding: 16px; display: flex; gap: 16px; align-items: center;">
+                                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #E5F0FF 0%, #CCE0FF 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">💧</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; color: var(--text-dark); margin-bottom: 4px;">Sparkling Water</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-gray);">0 cal · 0g sugar</div>
+                                    <div style="font-size: 0.85rem; color: var(--primary-green); font-weight: 600; margin-top: 4px;">+10 points</div>
+                                </div>
+                                <div style="font-weight: 700; color: var(--text-dark); font-size: 1.1rem;"><span style="color: #00732F;">د.إ</span> 5.5</div>
+                            </div>
+
+                            <div style="background: white; border: 2px solid #E8EBF0; border-radius: 16px; padding: 16px; display: flex; gap: 16px; align-items: center;">
+                                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #FFF0E5 0%, #FFE0CC 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2rem;">🌰</div>
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; color: var(--text-dark); margin-bottom: 4px;">Mixed Nuts</div>
+                                    <div style="font-size: 0.85rem; color: var(--text-gray);">160 cal · High fiber</div>
+                                    <div style="font-size: 0.85rem; color: var(--primary-green); font-weight: 600; margin-top: 4px;">+15 points</div>
+                                </div>
+                                <div style="font-weight: 700; color: var(--text-dark); font-size: 1.1rem;"><span style="color: #00732F;">د.إ</span> 7</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add subtle parallax effect on hover
+        document.querySelectorAll('.phone-frame').forEach(frame => {
+            frame.addEventListener('mousemove', (e) => {
+                const rect = frame.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const deltaX = (x - centerX) / centerX;
+                const deltaY = (y - centerY) / centerY;
+                
+                frame.style.transform = `translateY(-8px) scale(1.02) rotateY(${deltaX * 3}deg) rotateX(${-deltaY * 3}deg)`;
+            });
+            
+            frame.addEventListener('mouseleave', () => {
+                frame.style.transform = 'translateY(0) scale(1) rotateY(0deg) rotateX(0deg)';
+            });
+        });
+    </script>
+</body>
+</html>
